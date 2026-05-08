@@ -1,146 +1,83 @@
-import { useState, useEffect } from "react";
+import React from "react";
+import "./AIAssistant.css";
 
-export default function AIAssistant() {
+import aiAvatar from "../assets/ai-avatar.png";
 
-  const messages = [
-    "Hello 👋 Welcome to AI FUTURE",
-    "We build futuristic AI experiences",
-    "Chat, Voice & Smart Automation",
-    "Interactive Designs for next generation",
-    "Your imagination becomes reality here"
-  ];
-
-  const [index,setIndex] = useState(0);
-
-  /* AUTO TEXT CHANGE */
-
-  useEffect(()=>{
-
-    const interval = setInterval(()=>{
-
-      setIndex((prev)=>
-        (prev + 1) % messages.length
-      );
-
-    },3000);
-
-    return ()=>clearInterval(interval);
-
-  },[]);
-
+const AIAssistant = () => {
   return (
-
     <section className="ai-section">
 
-      {/* LEFT SIDE */}
+      {/* LEFT CARD */}
+      <div className="preview-card">
 
-      <div className="ai-left">
-
-        {/* AI VIDEO */}
-
-        <div className="ai-avatar-wrap">
-
-          <video
-            className="ai-avatar"
-            autoPlay
-            muted
-            loop
-            playsInline
-          >
-
-            {/* DUMMY VIDEO */}
-            <source
-              src="/ai.mp4"
-              type="video/mp4"
-            />
-
-          </video>
-
+        <div className="card-top">
+          <span>Card Preview</span>
+          <span>360°</span>
         </div>
 
-        {/* AI STATUS */}
+        <img
+          src="https://images.unsplash.com/photo-1587614382346-4ec70e388b28?q=80&w=800&auto=format&fit=crop"
+          alt="preview"
+          className="preview-image"
+        />
 
-        <div className="ai-live">
+        <div className="explore-box">
+          <div>
+            <h4>Explore in 3D</h4>
+            <p>Drag to Rotate</p>
+          </div>
 
-          <span className="live-dot"></span>
-
-          AI Assistant Online
-
+          <div className="arrow-buttons">
+            <button>{"<"}</button>
+            <button>{">"}</button>
+          </div>
         </div>
 
       </div>
 
-      {/* CENTER */}
+      {/* CENTER CHAT */}
+      <div className="chat-area">
 
-      <div className="ai-center">
+        <h1>
+          AI FUTURE <br />
+          ASSISTANT
+        </h1>
 
-        <h2 className="ai-title">
-
-          AI FUTURE ASSISTANT
-
-        </h2>
-
-        <p className="ai-message">
-
-          {messages[index]}
-
-        </p>
-
-        {/* CHAT BOX */}
-
-        <div className="chat-box">
-
-          <div className="chat-msg ai">
-
-            👋 Hello, how can I help you today?
-
-          </div>
-
-          <div className="chat-msg user">
-
-            I need futuristic website design
-
-          </div>
-
+        <div className="chat-bubble">
+          👋 Hi! I am Looper, happy to chat! 😊
         </div>
 
-        {/* INPUT */}
+        <div className="chat-bubble">
+          How can I help you today?
+        </div>
 
-        <div className="chat-input-wrap">
+        <div className="action-buttons">
+          <button>Schedule a Demo</button>
+          <button>Know More About Us</button>
+          <button>Read an Article</button>
+        </div>
 
-          <input
-            type="text"
-            placeholder="Type your message..."
-          />
+        <div className="input-box">
+          <input type="text" placeholder="Type your message..." />
 
-          <button>
+          <button className="send-btn">➤</button>
 
-            Send
-
-          </button>
-
+          <button className="mic-btn">🎤</button>
         </div>
 
       </div>
 
-      {/* RIGHT SIDE */}
+      {/* RIGHT AI */}
+      <div className="ai-character">
 
-      <div className="ai-right">
+        <div className="glow-ring"></div>
 
-        <div className="preview-card">
-
-          <div className="preview-glow"></div>
-
-          <img
-            src="/preview.png"
-            alt="preview"
-            className="preview-img"
-          />
-
-        </div>
+        <img src={aiAvatar} alt="AI Avatar" />
 
       </div>
 
     </section>
   );
-}
+};
+
+export default AIAssistant;

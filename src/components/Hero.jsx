@@ -1,14 +1,20 @@
-import {
+import React, {
   useEffect,
   useRef,
   useState
 } from "react";
+
+import "../styles/hero.css";
 
 import img1 from "../assets/offer1.png";
 import img2 from "../assets/offer2.png";
 import img3 from "../assets/offer3.png";
 
 export default function Hero() {
+
+  /* =========================
+     IMAGES
+  ========================= */
 
   const images = [
     img1,
@@ -18,6 +24,10 @@ export default function Hero() {
     img2,
     img3
   ];
+
+  /* =========================
+     REFS
+  ========================= */
 
   const trackRef = useRef(null);
 
@@ -33,55 +43,61 @@ export default function Hero() {
 
   const clickTimer = useRef(null);
 
-  const imgRef = useRef(null);
-
-  /* POPUP */
-
-  const [popup,setPopup] =
-    useState(false);
-
-  const [activeImg,setActiveImg] =
-    useState(null);
-
-  const [zoom,setZoom] =
-    useState(1);
-
-  const [position,setPosition] =
-    useState({
-      x:0,
-      y:0
-    });
-
   const popupDrag = useRef(false);
 
   const popupStart = useRef({
-    x:0,
-    y:0
+    x: 0,
+    y: 0
   });
+
+  /* =========================
+     STATES
+  ========================= */
+
+  const [popup, setPopup] =
+    useState(false);
+
+  const [activeImg, setActiveImg] =
+    useState(null);
+
+  const [zoom, setZoom] =
+    useState(1);
+
+  const [position, setPosition] =
+    useState({
+      x: 0,
+      y: 0
+    });
 
   /* =========================
      AUTO RUN
   ========================= */
 
-  useEffect(()=>{
+  useEffect(() => {
+
+    let running = true;
 
     const track = trackRef.current;
 
-    const run = ()=>{
+    const run = () => {
 
-      if(
+      if (!running) return;
+
+      if (
         track &&
         !isDown.current
-      ){
+      ) {
 
-        track.scrollLeft += 1;
+        track.scrollLeft += 0.7;
 
-        if(
-          track.scrollLeft >=
-          track.scrollWidth / 2
-        ){
-          track.scrollLeft = 0;
-        }
+        const maxScroll =
+  track.scrollWidth -
+  track.clientWidth;
+
+if (track.scrollLeft >= maxScroll / 2) {
+
+  track.scrollLeft = 0;
+}
       }
 
       autoRun.current =
@@ -90,20 +106,22 @@ export default function Hero() {
 
     run();
 
-    return ()=>{
+    return () => {
+
+      running = false;
 
       cancelAnimationFrame(
         autoRun.current
       );
     };
 
-  },[]);
+  }, []);
 
   /* =========================
      DRAG START
   ========================= */
 
-  const dragStart = (e)=>{
+  const dragStart = (e) => {
 
     isDown.current = true;
 
@@ -121,9 +139,9 @@ export default function Hero() {
      DRAG MOVE
   ========================= */
 
-  const dragMove = (e)=>{
+  const dragMove = (e) => {
 
-    if(!isDown.current) return;
+    if (!isDown.current) return;
 
     e.preventDefault();
 
@@ -134,7 +152,8 @@ export default function Hero() {
     const walk =
       (x - startX.current) * 1.5;
 
-    if(Math.abs(walk) > 5){
+    if (Math.abs(walk) > 5) {
+
       moved.current = true;
     }
 
@@ -146,24 +165,24 @@ export default function Hero() {
      DRAG END
   ========================= */
 
-  const dragEnd = ()=>{
+  const dragEnd = () => {
 
-    setTimeout(()=>{
+    setTimeout(() => {
 
       isDown.current = false;
 
-    },50);
+    }, 50);
   };
 
   /* =========================
-     DOUBLE TAP
+     DOUBLE TAP MOBILE
   ========================= */
 
-  const handleTap = (img)=>{
+  const handleTap = (img) => {
 
-    if(moved.current) return;
+    if (moved.current) return;
 
-    if(clickTimer.current){
+    if (clickTimer.current) {
 
       clearTimeout(
         clickTimer.current
@@ -175,36 +194,36 @@ export default function Hero() {
 
       setActiveImg(img);
 
-    }else{
+    } else {
 
       clickTimer.current =
-        setTimeout(()=>{
+        setTimeout(() => {
 
           clickTimer.current = null;
 
-        },250);
+        }, 250);
     }
   };
 
   /* =========================
-     POPUP ZOOM
+     ZOOM
   ========================= */
 
-  const toggleZoom = (e)=>{
+  const toggleZoom = (e) => {
 
     e.stopPropagation();
 
-    if(zoom === 1){
+    if (zoom === 1) {
 
-      setZoom(2);
+      setZoom(2.5);
 
-    }else{
+    } else {
 
       setZoom(1);
 
       setPosition({
-        x:0,
-        y:0
+        x: 0,
+        y: 0
       });
     }
   };
@@ -213,9 +232,9 @@ export default function Hero() {
      POPUP DRAG START
   ========================= */
 
-  const popupDragStart = (e)=>{
+  const popupDragStart = (e) => {
 
-    if(zoom === 1) return;
+    if (zoom === 1) return;
 
     popupDrag.current = true;
 
@@ -235,9 +254,9 @@ export default function Hero() {
      POPUP DRAG MOVE
   ========================= */
 
-  const popupDragMove = (e)=>{
+  const popupDragMove = (e) => {
 
-    if(
+    if (
       !popupDrag.current ||
       zoom === 1
     ) return;
@@ -263,9 +282,12 @@ export default function Hero() {
       y
     };
 
-    setPosition(prev=>({
-      x:prev.x + moveX,
-      y:prev.y + moveY
+    setPosition((prev) => ({
+
+      x: prev.x + moveX,
+
+      y: prev.y + moveY
+
     }));
   };
 
@@ -273,9 +295,25 @@ export default function Hero() {
      POPUP DRAG END
   ========================= */
 
-  const popupDragEnd = ()=>{
+  const popupDragEnd = () => {
 
     popupDrag.current = false;
+  };
+
+  /* =========================
+     CLOSE POPUP
+  ========================= */
+
+  const closePopup = () => {
+
+    setPopup(false);
+
+    setZoom(1);
+
+    setPosition({
+      x: 0,
+      y: 0
+    });
   };
 
   return (
@@ -286,64 +324,69 @@ export default function Hero() {
 
       <div className="hero-glow-top"></div>
 
-      {/* TRACK */}
+      {/* MAIN */}
 
-      <div
-        className="hero-track"
-        ref={trackRef}
+      <div className="hero-container">
 
-        onMouseDown={dragStart}
-        onMouseMove={dragMove}
-        onMouseUp={dragEnd}
-        onMouseLeave={dragEnd}
+        <div
+          className="hero-track"
+          ref={trackRef}
 
-        onTouchStart={dragStart}
-        onTouchMove={dragMove}
-        onTouchEnd={dragEnd}
-      >
+          onMouseDown={dragStart}
+          onMouseMove={dragMove}
+          onMouseUp={dragEnd}
+          onMouseLeave={dragEnd}
 
-        {[
-          ...images,
-          ...images
-        ].map((img,index)=>(
+          onTouchStart={dragStart}
+          onTouchMove={dragMove}
+          onTouchEnd={dragEnd}
+        >
 
-          <div
-            className="hero-item"
-            key={index}
+          {[...images, ...images].map(
+            (img, index) => (
 
-            onDoubleClick={(e)=>{
+              <div
+                className="hero-item"
+                key={index}
 
-              e.stopPropagation();
+                onDoubleClick={(e) => {
 
-              if(moved.current) return;
+                  e.stopPropagation();
 
-              setPopup(true);
+                  if (moved.current) return;
 
-              setActiveImg(img);
-            }}
+                  setPopup(true);
 
-            onTouchEnd={(e)=>{
+                  setActiveImg(img);
+                }}
 
-              e.stopPropagation();
+                onTouchEnd={(e) => {
 
-              handleTap(img);
-            }}
-          >
+                  e.stopPropagation();
 
-            <img
-              src={img}
-              alt="banner"
-              draggable="false"
+                  handleTap(img);
+                }}
+              >
 
-              onClick={(e)=>{
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-            />
+                <img
+                  src={img}
+                  alt="banner"
 
-          </div>
+                  draggable="false"
 
-        ))}
+                  onClick={(e) => {
+
+                    e.preventDefault();
+
+                    e.stopPropagation();
+                  }}
+                />
+
+              </div>
+            )
+          )}
+
+        </div>
 
       </div>
 
@@ -351,37 +394,29 @@ export default function Hero() {
 
       <div className="hero-glow-bottom"></div>
 
-      {/* POPUP */}
+      {/* =========================
+          POPUP
+      ========================= */}
 
       {popup && (
 
         <div
           className="popup"
-          onClick={()=>{
-
-            setPopup(false);
-
-            setZoom(1);
-
-            setPosition({
-              x:0,
-              y:0
-            });
-          }}
+          onClick={closePopup}
         >
 
           <img
-            ref={imgRef}
-
             src={activeImg}
-
             alt="popup"
 
             className="popup-img"
 
+            draggable="false"
+
             style={{
+
               transform:
-                `translate(${position.x}px,${position.y}px) scale(${zoom})`
+                `translate(${position.x}px, ${position.y}px) scale(${zoom})`
             }}
 
             onClick={toggleZoom}

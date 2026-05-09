@@ -1,0 +1,21 @@
+.ai-assistant-section {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  padding: 80px 5%;
+  background:
+    radial-gradient(circle at top left,
+    rgba(0,255,255,0.12), transparent 30%),
+    radial-gradient(circle at bottom right,
+    rgba(140,0,255,0.15), transparent 30%),
+    #060816;
+}
+
+.ai-container {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 0.9fr;
+  align-items: center;
+  gap: 30px;
+  position: relative;
+  z-index: 5;
+}

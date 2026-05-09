@@ -4,6 +4,7 @@ import {
   useRef
 } from "react";
 
+import "../styles/navbar.css";
 import logo from "../assets/logo.png";
 
 import {

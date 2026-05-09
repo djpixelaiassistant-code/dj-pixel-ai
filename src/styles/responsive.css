@@ -1,0 +1,29 @@
+@media (max-width: 768px) {
+
+.ai-container {
+  grid-template-columns: 1fr;
+}
+
+.avatar-container {
+  order: 1;
+}
+
+.chat-box {
+  order: 2;
+  height: auto;
+}
+
+.preview-card {
+  order: 3;
+  height: 320px;
+}
+
+.ai-avatar {
+  max-width: 280px;
+}
+
+.ai-assistant-section {
+  padding: 40px 20px;
+}
+
+}

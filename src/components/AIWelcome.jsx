@@ -4,7 +4,13 @@ import React, {
   useState
 } from "react";
 
-import "../styles/aiwelcome.css";
+import { motion } from "framer-motion";
+
+import Vapi from "@vapi-ai/web";
+
+import SpeechRecognition, {
+  useSpeechRecognition
+} from "react-speech-recognition";
 
 import {
   FiMic,
@@ -15,13 +21,39 @@ import {
   FiUnlock
 } from "react-icons/fi";
 
+import MouseGlow from "./MouseGlow";
+import ChatUI from "./ChatUI";
+import Waveform from "./Waveform";
+
+import "../styles/aiwelcome.css";
+import "../styles/chatui.css";
+import "../styles/mouseglow.css";
+import "../styles/waveform.css";
+
 import logo from "../assets/logo2.png";
 import avatar from "../assets/ai-avatar.webp";
 
+/* =========================================
+   VAPI
+========================================= */
+
+const vapi = new Vapi(
+  "e7c07938-2d1b-4d6d-8a88-3c3e5cc39231"
+);
+
+const assistantId =
+  "d039c25f-cdb6-424f-a0af-523e24701c36";
+
 export default function AIWelcome() {
 
+  const {
+    transcript,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
+
   /* =========================================
-     MIC STATES
+     STATES
   ========================================= */
 
   const [isMicMuted, setIsMicMuted] =
@@ -36,10 +68,6 @@ export default function AIWelcome() {
   const [showLock, setShowLock] =
     useState(false);
 
-  /* =========================================
-     AI VOICE STATES
-  ========================================= */
-
   const [isVoiceMuted, setIsVoiceMuted] =
     useState(false);
 
@@ -48,14 +76,87 @@ export default function AIWelcome() {
 
   const audioRef = useRef(null);
 
-  /* =========================================
-     DRAG START POSITION
-  ========================================= */
-
   const startY = useRef(0);
 
   /* =========================================
-     AUTO WELCOME VOICE
+     SPEECH SUPPORT
+  ========================================= */
+
+  useEffect(() => {
+
+    if (!browserSupportsSpeechRecognition) {
+
+      console.log(
+        "Speech Recognition not supported"
+      );
+
+    }
+
+  }, [browserSupportsSpeechRecognition]);
+
+  /* =========================================
+     VAPI EVENTS
+  ========================================= */
+
+  useEffect(() => {
+
+    if (!vapi) return;
+
+    const handleSpeechStart = () => {
+
+      setTalking(true);
+
+    };
+
+    const handleSpeechEnd = () => {
+
+      setTalking(false);
+
+    };
+
+    const handleCallEnd = () => {
+
+      setTalking(false);
+
+      setIsRecording(false);
+
+      setIsMicMuted(true);
+
+    };
+
+    vapi.on(
+      "speech-start",
+      handleSpeechStart
+    );
+
+    vapi.on(
+      "speech-end",
+      handleSpeechEnd
+    );
+
+    vapi.on(
+      "call-end",
+      handleCallEnd
+    );
+
+    return () => {
+
+      try {
+
+        vapi.stop();
+
+      } catch (err) {
+
+        console.log(err);
+
+      }
+
+    };
+
+  }, []);
+
+  /* =========================================
+     AUTO INTRO VOICE
   ========================================= */
 
   useEffect(() => {
@@ -64,19 +165,24 @@ export default function AIWelcome() {
 
       if (
         audioRef.current &&
-        !isVoiceMuted
+        !isVoiceMuted &&
+        !isRecording
       ) {
 
-        audioRef.current.play();
+        audioRef.current.play()
+          .catch((err) => {
+            console.log(err);
+          });
 
         setTalking(true);
+
       }
 
     }, 4000);
 
     return () => clearTimeout(timer);
 
-  }, []);
+  }, [isVoiceMuted, isRecording]);
 
   /* =========================================
      AUDIO END
@@ -85,6 +191,7 @@ export default function AIWelcome() {
   const handleAudioEnd = () => {
 
     setTalking(false);
+
   };
 
   /* =========================================
@@ -93,80 +200,73 @@ export default function AIWelcome() {
 
   const toggleVoice = () => {
 
-    const next =
-      !isVoiceMuted;
+    const next = !isVoiceMuted;
 
     setIsVoiceMuted(next);
 
     if (next) {
 
-      audioRef.current.pause();
+      if (audioRef.current) {
 
-      audioRef.current.currentTime = 0;
+        audioRef.current.pause();
+
+        audioRef.current.currentTime = 0;
+
+      }
 
       setTalking(false);
 
     } else {
 
-      audioRef.current.play();
+      if (
+        audioRef.current &&
+        !isRecording
+      ) {
 
-      setTalking(true);
+        audioRef.current.play()
+          .catch((err) => {
+            console.log(err);
+          });
+
+        setTalking(true);
+
+      }
+
     }
+
   };
 
   /* =========================================
-     MIC DOWN
+     STOP RECORDING
   ========================================= */
 
-  const handleMicDown = (e) => {
+  const stopRecording = () => {
 
-    const y =
-      e.touches
-        ? e.touches[0].clientY
-        : e.clientY;
+    setIsRecording(false);
 
-    startY.current = y;
+    setIsMicMuted(true);
 
-    /* STOP AI VOICE */
+    setIsLocked(false);
 
-    if (audioRef.current) {
-
-      audioRef.current.pause();
-
-      audioRef.current.currentTime = 0;
-    }
+    setShowLock(false);
 
     setTalking(false);
 
-    /* START RECORD */
+    SpeechRecognition.stopListening();
 
-    setIsMicMuted(false);
+    try {
 
-    setIsRecording(true);
+      vapi.stop();
 
-    setShowLock(true);
+    } catch (err) {
 
-    /* GLOBAL EVENTS */
+      console.log(err);
 
-    window.addEventListener(
-      "mousemove",
-      handleMicMove
-    );
+    }
 
-    window.addEventListener(
-      "mouseup",
-      handleMicUp
-    );
+    document.body.style.overflow =
+      "auto";
 
-    window.addEventListener(
-      "touchmove",
-      handleMicMove
-    );
-
-    window.addEventListener(
-      "touchend",
-      handleMicUp
-    );
   };
 
   /* =========================================
@@ -177,6 +277,12 @@ export default function AIWelcome() {
 
     if (!isRecording) return;
 
+    if (e.cancelable) {
+
+      e.preventDefault();
+
+    }
+
     const currentY =
       e.touches
         ? e.touches[0].clientY
@@ -185,8 +291,6 @@ export default function AIWelcome() {
     const diff =
       startY.current - currentY;
 
-    /* DRAG UP LOCK */
-
     if (
       diff > 80 &&
       !isLocked
@@ -194,8 +298,8 @@ export default function AIWelcome() {
 
       setIsLocked(true);
 
-      console.log("Mic Locked");
     }
+
   };
 
   /* =========================================
@@ -203,8 +307,6 @@ export default function AIWelcome() {
   ========================================= */
 
   const handleMicUp = () => {
-
-    /* REMOVE EVENTS */
 
     window.removeEventListener(
       "mousemove",
@@ -226,23 +328,89 @@ export default function AIWelcome() {
       handleMicUp
     );
 
-    /* IF LOCKED
-       KEEP RECORDING */
+    if (isLocked) return;
 
-    if (isLocked) {
+    stopRecording();
 
-      return;
+  };
+
+  /* =========================================
+     MIC DOWN
+  ========================================= */
+
+  const handleMicDown = async (e) => {
+
+    e.preventDefault();
+
+    try {
+
+      await vapi.start(assistantId);
+
+      console.log("VAPI Started");
+
+    } catch (err) {
+
+      console.log(
+        "VAPI ERROR:",
+        err
+      );
+
     }
 
-    /* NORMAL RELEASE */
+    const y =
+      e.touches
+        ? e.touches[0].clientY
+        : e.clientY;
 
-    setIsRecording(false);
+    startY.current = y;
 
-    setIsMicMuted(true);
+    if (audioRef.current) {
 
-    setShowLock(false);
+      audioRef.current.pause();
 
-    console.log("Recording Stopped");
+      audioRef.current.currentTime = 0;
+
+    }
+
+    setTalking(false);
+
+    setIsMicMuted(false);
+
+    setIsRecording(true);
+
+    setShowLock(true);
+
+    resetTranscript();
+
+    SpeechRecognition.startListening({
+      continuous: true,
+      language: "en-US"
+    });
+
+    document.body.style.overflow =
+      "hidden";
+
+    window.addEventListener(
+      "mousemove",
+      handleMicMove
+    );
+
+    window.addEventListener(
+      "mouseup",
+      handleMicUp
+    );
+
+    window.addEventListener(
+      "touchmove",
+      handleMicMove,
+      { passive: false }
+    );
+
+    window.addEventListener(
+      "touchend",
+      handleMicUp
+    );
+
   };
 
   /* =========================================
@@ -251,26 +419,13 @@ export default function AIWelcome() {
 
   const handleLockToggle = () => {
 
-    /* STOP LOCK MODE */
-
     if (isLocked) {
 
-      setIsLocked(false);
-
-      setIsRecording(false);
-
-      setIsMicMuted(true);
-
-      setShowLock(false);
-
-      console.log(
-        "Locked Recording Stopped"
-      );
+      stopRecording();
 
       return;
-    }
 
-    /* ENABLE LOCK */
+    }
 
     setIsLocked(true);
 
@@ -280,14 +435,38 @@ export default function AIWelcome() {
 
     setShowLock(true);
 
-    console.log(
-      "Locked Recording Active"
-    );
+    resetTranscript();
+
+    SpeechRecognition.startListening({
+      continuous: true,
+      language: "en-US"
+    });
+
   };
 
   return (
 
-    <section className="ai-welcome-section">
+    <motion.section
+      className="ai-welcome-section"
+
+      initial={{
+        opacity: 0,
+        scale: 0.96
+      }}
+
+      animate={{
+        opacity: 1,
+        scale: 1
+      }}
+
+      transition={{
+        duration: 1.2
+      }}
+    >
+
+      {/* MOUSE GLOW */}
+
+      <MouseGlow />
 
       {/* AUDIO */}
 
@@ -301,17 +480,47 @@ export default function AIWelcome() {
 
       <div className="welcome-left">
 
-        <img
+        <motion.img
           src={logo}
           alt="logo"
           className="welcome-logo"
+
+          initial={{
+            opacity: 0,
+            x: -60
+          }}
+
+          animate={{
+            opacity: 1,
+            x: 0
+          }}
+
+          transition={{
+            duration: 1
+          }}
         />
 
       </div>
 
       {/* CENTER */}
 
-      <div className="welcome-center">
+      <motion.div
+        className="welcome-center"
+
+        initial={{
+          opacity: 0,
+          y: 50
+        }}
+
+        animate={{
+          opacity: 1,
+          y: 0
+        }}
+
+        transition={{
+          duration: 1
+        }}
+      >
 
         <h1>
 
@@ -330,6 +539,14 @@ export default function AIWelcome() {
         </h1>
 
         <div className="typing-text">
+
+          {isRecording && (
+
+            <Waveform
+              isRecording={isRecording}
+            />
+
+          )}
 
           {
             talking
@@ -357,11 +574,27 @@ export default function AIWelcome() {
 
         </button>
 
-      </div>
+      </motion.div>
 
       {/* RIGHT */}
 
-      <div className="welcome-right">
+      <motion.div
+        className="welcome-right"
+
+        initial={{
+          opacity: 0,
+          scale: 0.8
+        }}
+
+        animate={{
+          opacity: 1,
+          scale: 1
+        }}
+
+        transition={{
+          duration: 1
+        }}
+      >
 
         <div className="avatar-ring"></div>
 
@@ -370,20 +603,52 @@ export default function AIWelcome() {
         <img
           src={avatar}
           alt="AI Avatar"
+
           className={`welcome-avatar ${
-            talking ? "talking" : ""
+            talking
+              ? "talking"
+              : ""
           }`}
         />
 
-        <div className="chat-bubble">
+        {/* CHAT BUBBLE */}
+
+        <motion.div
+          className="chat-bubble"
+
+          animate={{
+            y: [0, -8, 0]
+          }}
+
+          transition={{
+            repeat: Infinity,
+            duration: 3
+          }}
+        >
 
           {
             talking
-              ? "Welcome Back 👋"
+              ? "AI Speaking 👋"
               : isRecording
-              ? "AI Listening 🎤"
+              ? transcript ||
+                "Listening..."
               : "AI Assistant Ready"
           }
+
+        </motion.div>
+
+        {/* CHAT UI */}
+
+        <div
+          style={{
+            marginTop: "20px",
+            width: "100%"
+          }}
+        >
+
+          <ChatUI
+            transcript={transcript}
+          />
 
         </div>
 
@@ -397,7 +662,10 @@ export default function AIWelcome() {
                 ? "locked"
                 : ""
             }`}
-            onClick={handleLockToggle}
+
+            onClick={
+              handleLockToggle
+            }
           >
 
             {
@@ -435,8 +703,14 @@ export default function AIWelcome() {
                   ? "locked-mode"
                   : ""
               }`}
-              onMouseDown={handleMicDown}
-              onTouchStart={handleMicDown}
+
+              onMouseDown={
+                handleMicDown
+              }
+
+              onTouchStart={
+                handleMicDown
+              }
             >
 
               <div className="mic-slide-wrap">
@@ -457,21 +731,24 @@ export default function AIWelcome() {
 
           </div>
 
-          {/* AI VOICE */}
+          {/* VOICE */}
 
           <div className="control-group">
 
             <button
-className={`mic-toggle ${
-  isVoiceMuted || isRecording
-    ? "muted voice-muted-auto"
-    : "active"
-}`}
+              className={`mic-toggle ${
+                isVoiceMuted ||
+                isRecording
+                  ? "muted voice-muted-auto"
+                  : "active"
+              }`}
+
               onClick={toggleVoice}
             >
 
               {
-                isVoiceMuted
+                isVoiceMuted ||
+                isRecording
                   ? <FiVolumeX />
                   : <FiVolume2 />
               }
@@ -482,8 +759,10 @@ className={`mic-toggle ${
 
         </div>
 
-      </div>
+      </motion.div>
 
-    </section>
+    </motion.section>
+
   );
+
 }

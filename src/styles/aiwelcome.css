@@ -8,7 +8,7 @@
 
   width: 100%;
 
-  min-height: 100vh;
+  min-height: calc(100vh - 78px);
 
   background:
   radial-gradient(circle at top,
@@ -24,9 +24,9 @@
 
   justify-content: space-between;
 
-  padding: 80px 6%;
+  padding: 0 0 0;
 
-  gap: 40px;
+  gap: 10px;
 
   flex-wrap: wrap;
 }
@@ -52,12 +52,12 @@
 
   width: 100%;
 
-  max-width: 420px;
+  max-width: 320px;
 
   object-fit: contain;
 
   filter:
-  drop-shadow(0 0 25px #00e5ff);
+  drop-shadow(0 0 0px black);
 }
 
 /* =========================================
@@ -68,7 +68,7 @@
 
   flex: 1;
 
-  min-width: 320px;
+  min-width: 280px;
 
   display: flex;
 
@@ -83,7 +83,7 @@
 
 .welcome-center h1{
 
-  font-size: 5rem;
+  font-size: 4.8rem;
 
   line-height: 1;
 
@@ -107,7 +107,7 @@
 
   display: block;
 
-  font-size: 1rem;
+  font-size: 2rem;
 
   margin-bottom: 10px;
 
@@ -124,20 +124,20 @@
 
   color: #c084fc;
 
-  font-weight: 600;
+  font-weight: 550;
 
-  min-height: 40px;
+  min-height: 30px;
 
   display: flex;
 
   align-items: center;
 
-  gap: 10px;
+  gap: 8px;
 }
 
 .welcome-description{
 
-  max-width: 520px;
+  max-width: 480px;
 
   line-height: 1.8;
 
@@ -150,15 +150,15 @@
 
   width: fit-content;
 
-  padding: 16px 34px;
+  padding: 1px 1px;
 
   border: none;
 
-  border-radius: 14px;
+  border-radius: 1px;
 
   font-size: 1rem;
 
-  font-weight: 700;
+  font-weight: 500;
 
   cursor: pointer;
 
@@ -185,23 +185,6 @@
   0 0 45px rgba(124,58,237,.7);
 }
 
-.chat-ui{
-
-  position: absolute;
-
-  bottom: 140px;
-
-  left: 50%;
-
-  transform: translateX(-50%);
-
-  width: 320px;
-
-  z-index: 15;
-}
-
-
-
 /* =========================================
    RIGHT
 ========================================= */
@@ -210,7 +193,7 @@
 
   flex: 1;
 
-  min-width: 320px;
+  min-width: 250px;
 
   position: relative;
 
@@ -223,8 +206,6 @@
   z-index: 2;
 }
 
-
-
 /* =========================================
    AVATAR
 ========================================= */
@@ -233,7 +214,9 @@
 
   width: 100%;
 
-  max-width: 420px;
+  max-width: 300px;
+  
+  padding: 40px 0 0;
 
   z-index: 5;
 
@@ -290,9 +273,9 @@
 
   position: absolute;
 
-  width: 460px;
+  width: 380px;
 
-  height: 460px;
+  height: 420px;
 
   border-radius: 50%;
 
@@ -346,7 +329,7 @@
 
   position: absolute;
 
-  top: 40px;
+  top: 60px;
 
   right: 0;
 
@@ -357,7 +340,7 @@
 
   backdrop-filter: blur(10px);
 
-  padding: 14px 20px;
+  padding: 10px 15px;
 
   border-radius: 18px;
 
@@ -379,7 +362,11 @@
 
   position: absolute;
 
-  bottom: 0;
+  bottom: 25px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
 
   display: flex;
 
@@ -390,9 +377,9 @@
 
 .mic-toggle{
 
-  width: 70px;
+  width: 50px;
 
-  height: 70px;
+  height: 50px;
 
   border-radius: 50%;
 

@@ -6,8 +6,6 @@ import React, {
 
 import { motion } from "framer-motion";
 
-import Vapi from "@vapi-ai/web";
-
 import SpeechRecognition, {
   useSpeechRecognition
 } from "react-speech-recognition";
@@ -22,27 +20,14 @@ import {
 } from "react-icons/fi";
 
 import MouseGlow from "./MouseGlow";
-import ChatUI from "./ChatUI";
 import Waveform from "./Waveform";
 
 import "../styles/aiwelcome.css";
-import "../styles/chatui.css";
 import "../styles/mouseglow.css";
 import "../styles/waveform.css";
 
 import logo from "../assets/logo2.png";
 import avatar from "../assets/ai-avatar.webp";
-
-/* =========================================
-   VAPI
-========================================= */
-
-const vapi = new Vapi(
-  "e7c07938-2d1b-4d6d-8a88-3c3e5cc39231"
-);
-
-const assistantId =
-  "d039c25f-cdb6-424f-a0af-523e24701c36";
 
 export default function AIWelcome() {
 
@@ -93,67 +78,6 @@ export default function AIWelcome() {
     }
 
   }, [browserSupportsSpeechRecognition]);
-
-  /* =========================================
-     VAPI EVENTS
-  ========================================= */
-
-  useEffect(() => {
-
-    if (!vapi) return;
-
-    const handleSpeechStart = () => {
-
-      setTalking(true);
-
-    };
-
-    const handleSpeechEnd = () => {
-
-      setTalking(false);
-
-    };
-
-    const handleCallEnd = () => {
-
-      setTalking(false);
-
-      setIsRecording(false);
-
-      setIsMicMuted(true);
-
-    };
-
-    vapi.on(
-      "speech-start",
-      handleSpeechStart
-    );
-
-    vapi.on(
-      "speech-end",
-      handleSpeechEnd
-    );
-
-    vapi.on(
-      "call-end",
-      handleCallEnd
-    );
-
-    return () => {
-
-      try {
-
-        vapi.stop();
-
-      } catch (err) {
-
-        console.log(err);
-
-      }
-
-    };
-
-  }, []);
 
   /* =========================================
      AUTO INTRO VOICE
@@ -254,16 +178,6 @@ export default function AIWelcome() {
 
     SpeechRecognition.stopListening();
 
-    try {
-
-      vapi.stop();
-
-    } catch (err) {
-
-      console.log(err);
-
-    }
-
     document.body.style.overflow =
       "auto";
 
@@ -338,24 +252,9 @@ export default function AIWelcome() {
      MIC DOWN
   ========================================= */
 
-  const handleMicDown = async (e) => {
+  const handleMicDown = (e) => {
 
     e.preventDefault();
-
-    try {
-
-      await vapi.start(assistantId);
-
-      console.log("VAPI Started");
-
-    } catch (err) {
-
-      console.log(
-        "VAPI ERROR:",
-        err
-      );
-
-    }
 
     const y =
       e.touches
@@ -464,11 +363,7 @@ export default function AIWelcome() {
       }}
     >
 
-      {/* MOUSE GLOW */}
-
       <MouseGlow />
-
-      {/* AUDIO */}
 
       <audio
         ref={audioRef}
@@ -552,27 +447,11 @@ export default function AIWelcome() {
             talking
               ? "AI Speaking..."
               : isRecording
-              ? "Listening..."
+              ? transcript || "Listening..."
               : "Designing Future Experiences..."
           }
 
         </div>
-
-        <p className="welcome-description">
-
-          AI powered creative studio
-          building futuristic digital
-          experiences, premium designs
-          and next-level interactive
-          interfaces.
-
-        </p>
-
-        <button className="welcome-btn">
-
-          Start AI Experience
-
-        </button>
 
       </motion.div>
 
@@ -611,8 +490,6 @@ export default function AIWelcome() {
           }`}
         />
 
-        {/* CHAT BUBBLE */}
-
         <motion.div
           className="chat-bubble"
 
@@ -630,27 +507,11 @@ export default function AIWelcome() {
             talking
               ? "AI Speaking 👋"
               : isRecording
-              ? transcript ||
-                "Listening..."
+              ? transcript || "Listening..."
               : "AI Assistant Ready"
           }
 
         </motion.div>
-
-        {/* CHAT UI */}
-
-        <div
-          style={{
-            marginTop: "20px",
-            width: "100%"
-          }}
-        >
-
-          <ChatUI
-            transcript={transcript}
-          />
-
-        </div>
 
         {/* LOCK BUTTON */}
 
@@ -681,8 +542,6 @@ export default function AIWelcome() {
         {/* CONTROLS */}
 
         <div className="voice-controls">
-
-          {/* MIC */}
 
           <div className="control-group">
 
@@ -730,8 +589,6 @@ export default function AIWelcome() {
             </button>
 
           </div>
-
-          {/* VOICE */}
 
           <div className="control-group">
 

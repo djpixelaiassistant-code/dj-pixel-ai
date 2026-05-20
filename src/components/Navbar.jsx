@@ -1,10 +1,17 @@
 import {
+  useLanguage
+} from "../context/LanguageContext";
+
+import languageData
+from "../translations/language";
+import {
   useState,
   useEffect,
   useRef
 } from "react";
 
 import "../styles/navbar.css";
+
 import logo from "../assets/logo.png";
 
 import {
@@ -16,19 +23,24 @@ import {
 
 export default function Navbar() {
 
+  /* =========================
+     STATES
+  ========================= */
+
   const [open,setOpen] = useState(false);
+
+  const {
+  language,
+  setLanguage
+} = useLanguage();
+
+const text =
+languageData[language];
 
   const menuRef = useRef(null);
 
   const toggleRef = useRef(null);
 
-  const menu = [
-    "Home",
-    "Services",
-    "Design",
-    "About",
-    "Contact"
-  ];
 
   /* =========================
      OUTSIDE CLICK CLOSE
@@ -41,8 +53,10 @@ export default function Navbar() {
       if(
         menuRef.current &&
         !menuRef.current.contains(e.target) &&
+        toggleRef.current &&
         !toggleRef.current.contains(e.target)
       ){
+
         setOpen(false);
       }
     };
@@ -72,10 +86,42 @@ export default function Navbar() {
 
   },[]);
 
-  return (
+  /* =========================
+     CLOSE MENU ON RESIZE
+  ========================= */
+
+  useEffect(()=>{
+
+    const handleResize = ()=>{
+
+      if(window.innerWidth > 768){
+
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener(
+      "resize",
+      handleResize
+    );
+
+    return ()=>{
+
+      window.removeEventListener(
+        "resize",
+        handleResize
+      );
+    };
+
+  },[]);
+
+  return(
 
     <header className="navbar">
-	<div className="navbar-glow"></div>
+
+      {/* RUNNING GLOW */}
+
+      <div className="navbar-glow"></div>
 
       {/* LOGO */}
 
@@ -93,34 +139,85 @@ export default function Navbar() {
 
       <nav className="menu">
 
-        {menu.map((item,index)=>(
+        <a
+          href="#"
+          className="nav-link"
+        >
+          {text.home}
+        </a>
 
-          <a
-            href="#"
-            key={index}
-            className="nav-link"
-          >
-            {item}
-          </a>
+        <a
+          href="#"
+          className="nav-link"
+        >
+          {text.services}
+        </a>
 
-        ))}
+        <a
+          href="#"
+          className="nav-link"
+        >
+          {text.design}
+        </a>
+
+        <a
+          href="#"
+          className="nav-link"
+        >
+          {text.about}
+        </a>
+
+        <a
+          href="#"
+          className="nav-link"
+        >
+          {text.contact}
+        </a>
 
       </nav>
 
-      {/* DESKTOP BUTTONS */}
+      {/* DESKTOP ACTIONS */}
 
       <div className="nav-actions">
+
+        {/* LANGUAGE SELECTOR */}
+
+        <select
+          className="language-selector"
+          value={language}
+          onChange={(e)=>
+            setLanguage(e.target.value)
+          }
+        >
+
+          <option value="EN">
+            EN
+          </option>
+
+          <option value="தமிழ்">
+            தமிழ்
+          </option>
+
+          <option value="हिन्दी">
+            हिन्दी
+          </option>
+
+        </select>
 
         {/* SIGN UP */}
 
         <button className="nav-btn">
 
           <span className="nav-icon">
+
             <FaUserPlus />
+
           </span>
 
           <span>
-            Sign Up
+
+            {text.signup}
+
           </span>
 
         </button>
@@ -130,11 +227,15 @@ export default function Navbar() {
         <button className="sign-btn">
 
           <span className="nav-icon">
+
             <FaSignInAlt />
+
           </span>
 
           <span>
-            Login
+
+            {text.login}
+
           </span>
 
         </button>
@@ -151,7 +252,8 @@ export default function Navbar() {
         }
       >
 
-        {open
+        {
+          open
           ? <FaTimes />
           : <FaBars />
         }
@@ -160,58 +262,139 @@ export default function Navbar() {
 
       {/* MOBILE MENU */}
 
-      {open && (
+      {
+        open && (
 
-        <div
-          className="mobile-menu"
-          ref={menuRef}
-        >
+          <div
+            className="mobile-menu"
+            ref={menuRef}
+          >
 
-          {menu.map((item,index)=>(
+            {/* MOBILE LANGUAGE */}
+
+            <select
+              className="
+              language-selector
+              mobile-language
+              "
+              value={language}
+              onChange={(e)=>
+                setLanguage(
+                  e.target.value
+                )
+              }
+            >
+
+              <option value="EN">
+                EN
+              </option>
+
+              <option value="தமிழ்">
+                தமிழ்
+              </option>
+
+              <option value="हिन्दी">
+                हिन्दी
+              </option>
+
+            </select>
+
+            {/* LINKS */}
 
             <a
               href="#"
-              key={index}
               onClick={()=>
                 setOpen(false)
               }
             >
-              {item}
+              {text.home}
             </a>
 
-          ))}
+            <a
+              href="#"
+              onClick={()=>
+                setOpen(false)
+              }
+            >
+              {text.services}
+            </a>
 
-          {/* MOBILE SIGNUP */}
+            <a
+              href="#"
+              onClick={()=>
+                setOpen(false)
+              }
+            >
+              {text.design}
+            </a>
 
-          <button className="mobile-btn">
+            <a
+              href="#"
+              onClick={()=>
+                setOpen(false)
+              }
+            >
+              {text.about}
+            </a>
 
-            <span className="nav-icon">
-              <FaUserPlus />
-            </span>
+            <a
+              href="#"
+              onClick={()=>
+                setOpen(false)
+              }
+            >
+              {text.contact}
+            </a>
 
-            <span>
-              Sign Up
-            </span>
+            {/* MOBILE SIGNUP */}
 
-          </button>
+            <button
+              className="mobile-btn"
+              onClick={()=>
+                setOpen(false)
+              }
+            >
 
-          {/* MOBILE LOGIN */}
+              <span className="nav-icon">
 
-          <button className="mobile-btn">
+                <FaUserPlus />
 
-            <span className="nav-icon">
-              <FaSignInAlt />
-            </span>
+              </span>
 
-            <span>
-              Login
-            </span>
+              <span>
 
-          </button>
+                {text.signup}
 
-        </div>
+              </span>
 
-      )}
+            </button>
+
+            {/* MOBILE LOGIN */}
+
+            <button
+              className="mobile-btn"
+              onClick={()=>
+                setOpen(false)
+              }
+            >
+
+              <span className="nav-icon">
+
+                <FaSignInAlt />
+
+              </span>
+
+              <span>
+
+                {text.login}
+
+              </span>
+
+            </button>
+
+          </div>
+        )
+      }
 
     </header>
   );

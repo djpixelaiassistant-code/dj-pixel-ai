@@ -1,12 +1,13 @@
-import React, {
+import React,{
   useEffect,
   useRef,
   useState
 } from "react";
 
-import { motion } from "framer-motion";
+import { motion }
+from "framer-motion";
 
-import SpeechRecognition, {
+import SpeechRecognition,{
   useSpeechRecognition
 } from "react-speech-recognition";
 
@@ -19,17 +20,44 @@ import {
   FiUnlock
 } from "react-icons/fi";
 
-import MouseGlow from "./MouseGlow";
-import Waveform from "./Waveform";
+import {
+  useLanguage
+} from "../context/LanguageContext";
+
+import languageData
+from "../translations/language";
+
+import MouseGlow
+from "./MouseGlow";
+
+import Waveform
+from "./Waveform";
 
 import "../styles/aiwelcome.css";
 import "../styles/mouseglow.css";
 import "../styles/waveform.css";
 
-import logo from "../assets/logo2.png";
-import avatar from "../assets/ai-avatar.webp";
+import logo
+from "../assets/logo2.png";
 
-export default function AIWelcome() {
+import avatar
+from "../assets/ai-avatar.webp";
+
+export default function AIWelcome(){
+
+  /* =========================================
+     GLOBAL LANGUAGE
+  ========================================= */
+
+  const { language } =
+  useLanguage();
+
+  const text =
+  languageData[language];
+
+  /* =========================================
+     SPEECH RECOGNITION
+  ========================================= */
 
   const {
     transcript,
@@ -41,23 +69,23 @@ export default function AIWelcome() {
      STATES
   ========================================= */
 
-  const [isMicMuted, setIsMicMuted] =
-    useState(true);
+  const [isMicMuted,setIsMicMuted] =
+  useState(true);
 
-  const [isRecording, setIsRecording] =
-    useState(false);
+  const [isRecording,setIsRecording] =
+  useState(false);
 
-  const [isLocked, setIsLocked] =
-    useState(false);
+  const [isLocked,setIsLocked] =
+  useState(false);
 
-  const [showLock, setShowLock] =
-    useState(false);
+  const [showLock,setShowLock] =
+  useState(false);
 
-  const [isVoiceMuted, setIsVoiceMuted] =
-    useState(false);
+  const [isVoiceMuted,setIsVoiceMuted] =
+  useState(false);
 
-  const [talking, setTalking] =
-    useState(false);
+  const [talking,setTalking] =
+  useState(false);
 
   const audioRef = useRef(null);
 
@@ -67,52 +95,59 @@ export default function AIWelcome() {
      SPEECH SUPPORT
   ========================================= */
 
-  useEffect(() => {
+  useEffect(()=>{
 
-    if (!browserSupportsSpeechRecognition) {
+    if(
+      !browserSupportsSpeechRecognition
+    ){
 
       console.log(
         "Speech Recognition not supported"
       );
-
     }
 
-  }, [browserSupportsSpeechRecognition]);
+  },[
+    browserSupportsSpeechRecognition
+  ]);
 
   /* =========================================
      AUTO INTRO VOICE
   ========================================= */
 
-  useEffect(() => {
+  useEffect(()=>{
 
-    const timer = setTimeout(() => {
+    const timer = setTimeout(()=>{
 
-      if (
+      if(
         audioRef.current &&
         !isVoiceMuted &&
         !isRecording
-      ) {
+      ){
 
         audioRef.current.play()
-          .catch((err) => {
-            console.log(err);
-          });
+        .catch((err)=>{
+
+          console.log(err);
+
+        });
 
         setTalking(true);
-
       }
 
-    }, 4000);
+    },4000);
 
-    return () => clearTimeout(timer);
+    return ()=>clearTimeout(timer);
 
-  }, [isVoiceMuted, isRecording]);
+  },[
+    isVoiceMuted,
+    isRecording
+  ]);
 
   /* =========================================
      AUDIO END
   ========================================= */
 
-  const handleAudioEnd = () => {
+  const handleAudioEnd = ()=>{
 
     setTalking(false);
 
@@ -122,49 +157,48 @@ export default function AIWelcome() {
      TOGGLE AI VOICE
   ========================================= */
 
-  const toggleVoice = () => {
+  const toggleVoice = ()=>{
 
-    const next = !isVoiceMuted;
+    const next =
+    !isVoiceMuted;
 
     setIsVoiceMuted(next);
 
-    if (next) {
+    if(next){
 
-      if (audioRef.current) {
+      if(audioRef.current){
 
         audioRef.current.pause();
 
         audioRef.current.currentTime = 0;
-
       }
 
       setTalking(false);
 
-    } else {
+    }else{
 
-      if (
+      if(
         audioRef.current &&
         !isRecording
-      ) {
+      ){
 
         audioRef.current.play()
-          .catch((err) => {
-            console.log(err);
-          });
+        .catch((err)=>{
+
+          console.log(err);
+
+        });
 
         setTalking(true);
-
       }
-
     }
-
   };
 
   /* =========================================
      STOP RECORDING
   ========================================= */
 
-  const stopRecording = () => {
+  const stopRecording = ()=>{
 
     setIsRecording(false);
 
@@ -179,48 +213,44 @@ export default function AIWelcome() {
     SpeechRecognition.stopListening();
 
     document.body.style.overflow =
-      "auto";
-
+    "auto";
   };
 
   /* =========================================
      MIC MOVE
   ========================================= */
 
-  const handleMicMove = (e) => {
+  const handleMicMove = (e)=>{
 
-    if (!isRecording) return;
+    if(!isRecording) return;
 
-    if (e.cancelable) {
+    if(e.cancelable){
 
       e.preventDefault();
-
     }
 
     const currentY =
-      e.touches
-        ? e.touches[0].clientY
-        : e.clientY;
+    e.touches
+    ? e.touches[0].clientY
+    : e.clientY;
 
     const diff =
-      startY.current - currentY;
+    startY.current - currentY;
 
-    if (
+    if(
       diff > 80 &&
       !isLocked
-    ) {
+    ){
 
       setIsLocked(true);
-
     }
-
   };
 
   /* =========================================
      MIC RELEASE
   ========================================= */
 
-  const handleMicUp = () => {
+  const handleMicUp = ()=>{
 
     window.removeEventListener(
       "mousemove",
@@ -242,33 +272,31 @@ export default function AIWelcome() {
       handleMicUp
     );
 
-    if (isLocked) return;
+    if(isLocked) return;
 
     stopRecording();
-
   };
 
   /* =========================================
      MIC DOWN
   ========================================= */
 
-  const handleMicDown = (e) => {
+  const handleMicDown = (e)=>{
 
     e.preventDefault();
 
     const y =
-      e.touches
-        ? e.touches[0].clientY
-        : e.clientY;
+    e.touches
+    ? e.touches[0].clientY
+    : e.clientY;
 
     startY.current = y;
 
-    if (audioRef.current) {
+    if(audioRef.current){
 
       audioRef.current.pause();
 
       audioRef.current.currentTime = 0;
-
     }
 
     setTalking(false);
@@ -282,12 +310,14 @@ export default function AIWelcome() {
     resetTranscript();
 
     SpeechRecognition.startListening({
-      continuous: true,
-      language: "en-US"
+
+      continuous:true,
+
+      language:"en-US"
     });
 
     document.body.style.overflow =
-      "hidden";
+    "hidden";
 
     window.addEventListener(
       "mousemove",
@@ -302,28 +332,26 @@ export default function AIWelcome() {
     window.addEventListener(
       "touchmove",
       handleMicMove,
-      { passive: false }
+      { passive:false }
     );
 
     window.addEventListener(
       "touchend",
       handleMicUp
     );
-
   };
 
   /* =========================================
      LOCK TOGGLE
   ========================================= */
 
-  const handleLockToggle = () => {
+  const handleLockToggle = ()=>{
 
-    if (isLocked) {
+    if(isLocked){
 
       stopRecording();
 
       return;
-
     }
 
     setIsLocked(true);
@@ -337,29 +365,30 @@ export default function AIWelcome() {
     resetTranscript();
 
     SpeechRecognition.startListening({
-      continuous: true,
-      language: "en-US"
-    });
 
+      continuous:true,
+
+      language:"en-US"
+    });
   };
 
-  return (
+  return(
 
     <motion.section
       className="ai-welcome-section"
 
       initial={{
-        opacity: 0,
-        scale: 0.96
+        opacity:0,
+        scale:0.96
       }}
 
       animate={{
-        opacity: 1,
-        scale: 1
+        opacity:1,
+        scale:1
       }}
 
       transition={{
-        duration: 1.2
+        duration:1.2
       }}
     >
 
@@ -381,17 +410,17 @@ export default function AIWelcome() {
           className="welcome-logo"
 
           initial={{
-            opacity: 0,
-            x: -60
+            opacity:0,
+            x:-60
           }}
 
           animate={{
-            opacity: 1,
-            x: 0
+            opacity:1,
+            x:0
           }}
 
           transition={{
-            duration: 1
+            duration:1
           }}
         />
 
@@ -403,52 +432,57 @@ export default function AIWelcome() {
         className="welcome-center"
 
         initial={{
-          opacity: 0,
-          y: 50
+          opacity:0,
+          y:50
         }}
 
         animate={{
-          opacity: 1,
-          y: 0
+          opacity:1,
+          y:0
         }}
 
         transition={{
-          duration: 1
+          duration:1
         }}
       >
 
         <h1>
 
-          <span>WELCOME TO</span>
+          <span>
 
-          DJ PIXEL
+            {text.heroTitle1}
+
+          </span>
+
+          {text.heroTitle2}
 
           <br />
 
-          FUTURE AI
+          {text.heroTitle3}
 
           <br />
 
-          DESIGNER
+          {text.heroTitle4}
 
         </h1>
 
         <div className="typing-text">
 
-          {isRecording && (
+          {
+            isRecording && (
 
-            <Waveform
-              isRecording={isRecording}
-            />
-
-          )}
+              <Waveform
+                isRecording={isRecording}
+              />
+            )
+          }
 
           {
             talking
-              ? "AI Speaking..."
-              : isRecording
-              ? transcript || "Listening..."
-              : "Designing Future Experiences..."
+            ? text.aiSpeaking
+            : isRecording
+            ? transcript || "Listening..."
+            : text.heroText
           }
 
         </div>
@@ -461,17 +495,17 @@ export default function AIWelcome() {
         className="welcome-right"
 
         initial={{
-          opacity: 0,
-          scale: 0.8
+          opacity:0,
+          scale:0.8
         }}
 
         animate={{
-          opacity: 1,
-          scale: 1
+          opacity:1,
+          scale:1
         }}
 
         transition={{
-          duration: 1
+          duration:1
         }}
       >
 
@@ -485,8 +519,8 @@ export default function AIWelcome() {
 
           className={`welcome-avatar ${
             talking
-              ? "talking"
-              : ""
+            ? "talking"
+            : ""
           }`}
         />
 
@@ -494,50 +528,51 @@ export default function AIWelcome() {
           className="chat-bubble"
 
           animate={{
-            y: [0, -8, 0]
+            y:[0,-8,0]
           }}
 
           transition={{
-            repeat: Infinity,
-            duration: 3
+            repeat:Infinity,
+            duration:3
           }}
         >
 
           {
             talking
-              ? "AI Speaking 👋"
-              : isRecording
-              ? transcript || "Listening..."
-              : "AI Assistant Ready"
+            ? `${text.aiSpeaking} 👋`
+            : isRecording
+            ? transcript || "Listening..."
+            : text.aiReady
           }
 
         </motion.div>
 
         {/* LOCK BUTTON */}
 
-        {showLock && (
+        {
+          showLock && (
 
-          <button
-            className={`mic-lock-btn ${
-              isLocked
+            <button
+              className={`mic-lock-btn ${
+                isLocked
                 ? "locked"
                 : ""
-            }`}
+              }`}
 
-            onClick={
-              handleLockToggle
-            }
-          >
+              onClick={
+                handleLockToggle
+              }
+            >
 
-            {
-              isLocked
+              {
+                isLocked
                 ? <FiLock />
                 : <FiUnlock />
-            }
+              }
 
-          </button>
-
-        )}
+            </button>
+          )
+        }
 
         {/* CONTROLS */}
 
@@ -549,18 +584,18 @@ export default function AIWelcome() {
               className={`mic-toggle
               ${
                 isMicMuted
-                  ? "muted"
-                  : "active"
+                ? "muted"
+                : "active"
               }
               ${
                 isRecording
-                  ? "recording"
-                  : ""
+                ? "recording"
+                : ""
               }
               ${
                 isLocked
-                  ? "locked-mode"
-                  : ""
+                ? "locked-mode"
+                : ""
               }`}
 
               onMouseDown={
@@ -578,8 +613,8 @@ export default function AIWelcome() {
 
                   {
                     isMicMuted
-                      ? <FiMicOff />
-                      : <FiMic />
+                    ? <FiMicOff />
+                    : <FiMic />
                   }
 
                 </div>
@@ -596,8 +631,8 @@ export default function AIWelcome() {
               className={`mic-toggle ${
                 isVoiceMuted ||
                 isRecording
-                  ? "muted voice-muted-auto"
-                  : "active"
+                ? "muted voice-muted-auto"
+                : "active"
               }`}
 
               onClick={toggleVoice}
@@ -606,8 +641,8 @@ export default function AIWelcome() {
               {
                 isVoiceMuted ||
                 isRecording
-                  ? <FiVolumeX />
-                  : <FiVolume2 />
+                ? <FiVolumeX />
+                : <FiVolume2 />
               }
 
             </button>
@@ -619,7 +654,5 @@ export default function AIWelcome() {
       </motion.div>
 
     </motion.section>
-
   );
-
 }

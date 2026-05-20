@@ -1,7 +1,24 @@
 import logoVideo from "../assets/logo.mp4";
 import "../styles/footer.css";
 
+import { useLanguage }
+from "../context/LanguageContext";
+
+import languageData
+from "../translations/language";
+
 export default function Footer() {
+
+  /* =========================
+     LANGUAGE
+  ========================= */
+
+  const {
+    language
+  } = useLanguage();
+
+  const text =
+    languageData[language];
 
   return (
 
@@ -49,9 +66,9 @@ export default function Footer() {
           </div>
 
           <p className="footer-text">
-            Modern AI powered creative
-            digital platform for next
-            generation experience.
+
+            {text.footerDesc}
+
           </p>
 
         </div>
@@ -61,27 +78,39 @@ export default function Footer() {
         <div className="footer-links">
 
           <h3>
-            Quick Links
+
+            {text.quickLinks}
+
           </h3>
 
           <a href="#">
-            Home
+
+            {text.home}
+
           </a>
 
           <a href="#">
-            Services
+
+            {text.services}
+
           </a>
 
           <a href="#">
-            Design
+
+            {text.design}
+
           </a>
 
           <a href="#">
-            About
+
+            {text.about}
+
           </a>
 
           <a href="#">
-            Contact
+
+            {text.contact}
+
           </a>
 
         </div>
@@ -91,7 +120,9 @@ export default function Footer() {
         <div className="footer-contact">
 
           <h3>
-            Contact
+
+            {text.contact}
+
           </h3>
 
           <p>
@@ -103,7 +134,9 @@ export default function Footer() {
           </p>
 
           <p>
-            Chennai, India
+
+            {text.location}
+
           </p>
 
         </div>
@@ -115,7 +148,8 @@ export default function Footer() {
       <div className="footer-bottom">
 
         © 2026 DJ Pixel Studio AI.
-        All Rights Reserved.
+
+        {text.rights}
 
       </div>
 

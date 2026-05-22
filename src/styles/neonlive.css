@@ -1,0 +1,40 @@
+/* ===================================
+   NEON PAGE
+=================================== */
+
+.neon-page{
+
+  position:relative;
+
+  width:100%;
+
+  min-height:100vh;
+
+  background:#020617;
+
+  overflow:hidden;
+
+  padding-top:120px;
+}
+
+/* ===================================
+   BACKGROUND GLOW
+=================================== */
+
+.bg-glow{
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+  radial-gradient(
+    circle at top,
+    rgba(168,85,247,.22),
+    transparent 40%
+  );
+
+  pointer-events:none;
+
+  z-index:1;
+}

@@ -1,0 +1,163 @@
+/* ===================================
+   ABOUT SECTION
+=================================== */
+
+.about-section{
+
+  position:relative;
+
+  width:100%;
+
+  padding:100px 20px;
+
+  background:#020617;
+
+  overflow:hidden;
+
+  text-align:center;
+}
+
+/* ===================================
+   TOP RUNNING GLOW
+=================================== */
+
+.about-section::before{
+
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:0;
+
+  width:100%;
+
+  height:2px;
+
+  background:
+  linear-gradient(
+    90deg,
+    transparent,
+    cyan,
+    #ff00ff,
+    cyan,
+    transparent
+  );
+
+  background-size:300%;
+
+  animation:aboutGlow 4s linear infinite;
+
+  box-shadow:
+  0 0 15px cyan,
+  0 0 30px #ff00ff;
+
+  z-index:10;
+}
+
+/* GLOW ANIMATION */
+
+@keyframes aboutGlow{
+
+  0%{
+
+    background-position:0%;
+  }
+
+  100%{
+
+    background-position:300%;
+  }
+}
+
+/* ===================================
+   HEADING
+=================================== */
+
+.about-section h2{
+
+  font-size:3rem;
+
+  font-weight:800;
+
+  margin-bottom:24px;
+
+  text-transform:uppercase;
+
+  letter-spacing:2px;
+
+  background:
+  linear-gradient(
+    90deg,
+    cyan,
+    #ff00ff,
+    cyan
+  );
+
+  background-size:300%;
+
+  -webkit-background-clip:text;
+
+  -webkit-text-fill-color:transparent;
+
+  animation:titleGlow 5s linear infinite;
+
+  filter:
+  drop-shadow(0 0 18px rgba(0,255,255,.25));
+}
+
+/* TITLE ANIMATION */
+
+@keyframes titleGlow{
+
+  0%{
+    background-position:0%;
+  }
+
+  100%{
+    background-position:300%;
+  }
+}
+
+/* ===================================
+   PARAGRAPH
+=================================== */
+
+.about-section p{
+
+  max-width:850px;
+
+  margin:auto;
+
+  line-height:2;
+
+  font-size:1.1rem;
+
+  color:#cbd5e1;
+
+  opacity:.95;
+}
+
+/* ===================================
+   MOBILE
+=================================== */
+
+@media(max-width:768px){
+
+  .about-section{
+
+    padding:70px 18px;
+  }
+
+  .about-section h2{
+
+    font-size:2rem;
+  }
+
+  .about-section p{
+
+    font-size:.95rem;
+
+    line-height:1.8;
+  }
+}

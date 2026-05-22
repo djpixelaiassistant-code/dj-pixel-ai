@@ -24,7 +24,7 @@
 
   justify-content: space-between;
 
-  padding: 0 0 0;
+	padding: 10px 20px 30px;
 
   gap: 10px;
 
@@ -52,7 +52,7 @@
 
   width: 100%;
 
-  max-width: 320px;
+  max-width: 280px;
 
   object-fit: contain;
 
@@ -85,13 +85,13 @@
 
   font-size:clamp(
   2.2rem,
-  7vw,
+  5vw,
   4.7rem
 );
 
-  line-height: 1;
+  line-height: 1.2;
 
-  font-weight: 900;
+  font-weight: 800;
 
   text-transform: uppercase;
   
@@ -128,7 +128,7 @@
 
 .typing-text{
 
-  font-size: 1.4rem;
+  font-size: 1.1rem;
 
   color: #c084fc;
 
@@ -164,7 +164,7 @@
 
   border-radius: 1px;
 
-  font-size: 1rem;
+  font-size: 0.8rem;
 
   font-weight: 500;
 
@@ -199,19 +199,23 @@
 
 .welcome-right{
 
-  flex: 1;
+  flex:1;
 
-  min-width: 250px;
+  min-width:250px;
 
-  position: relative;
+  position:relative;
 
-  display: flex;
+  display:flex;
 
-  align-items: center;
+  flex-direction:column;
 
-  justify-content: center;
+  align-items:center;
 
-  z-index: 2;
+  justify-content:center;
+
+  gap:20px;
+
+  z-index:2;
 }
 
 /* =========================================
@@ -279,27 +283,150 @@
 
 .avatar-ring{
 
-  position: absolute;
+  position:absolute;
 
-  width: 380px;
+  width:320px;
 
-  height: 420px;
+  height:380px;
 
-  border-radius: 50%;
+  border-radius:50%;
 
-  border: 2px solid rgba(0,229,255,.35);
+  border:
+  2px solid rgba(0,205,180,.7);
 
-  animation: rotateRing 12s linear infinite;
+  background:
+  radial-gradient(
+    circle at center,
+    rgba(0,255,255,.08),
+    transparent 70%
+  );
+
+  box-shadow:
+  0 0 20px cyan,
+  inset 0 0 10px rgba(0,255,255,.5);
+
+  z-index:5;
+
+  overflow:hidden;
+
+  animation:
+  rotateRing 8s linear infinite,
+  pulseZoom 4s ease-in-out infinite;
 }
+
+/* ===================================
+   SPRING RUNNING LIGHT
+=================================== */
+
+.avatar-ring::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:-30px;
+
+  border-radius:50%;
+
+  background:
+  conic-gradient(
+    from 0deg,
+    transparent,
+    rgba(0,255,255,.9),
+    transparent,
+    rgba(255,0,255,.9),
+    transparent
+  );
+
+  animation:
+  ringFlow 3s linear infinite;
+
+  filter:blur(6px);
+}
+
+/* ===================================
+   INNER GLOW
+=================================== */
+
+.avatar-ring::after{
+
+  content:"";
+
+  position:absolute;
+
+  inset:18px;
+
+  border-radius:50%;
+
+  border:
+  1px solid rgba(255,255,255,.12);
+
+  box-shadow:
+  inset 0 0 15px rgba(0,255,255,.25);
+}
+
+/* ===================================
+   ROTATE
+=================================== */
 
 @keyframes rotateRing{
 
   from{
-    transform: rotate(0deg);
+
+    transform:
+    rotate(0deg);
   }
 
   to{
-    transform: rotate(360deg);
+
+    transform:
+    rotate(360deg);
+  }
+}
+
+/* ===================================
+   RUNNING SPRING EFFECT
+=================================== */
+
+@keyframes ringFlow{
+
+  from{
+
+    transform:
+    rotate(0deg)
+    scale(1);
+  }
+
+  to{
+
+    transform:
+    rotate(360deg)
+    scale(1.05);
+  }
+}
+
+/* ===================================
+   ZOOM IN OUT
+=================================== */
+
+@keyframes pulseZoom{
+
+  0%{
+
+    transform:
+    scale(1);
+  }
+
+  50%{
+
+    transform:
+    scale(1.06);
+  }
+
+  100%{
+
+    transform:
+    scale(1);
   }
 }
 
@@ -309,13 +436,13 @@
 
 .avatar-platform{
 
-  position: absolute;
+  position:absolute;
 
-  bottom: 40px;
+  bottom:80px;
 
-  width: 300px;
+  width:300px;
 
-  height: 40px;
+  height:40px;
 
   background:
   radial-gradient(
@@ -324,9 +451,9 @@
   transparent 70%
   );
 
-  border-radius: 50%;
+  border-radius:50%;
 
-  filter: blur(12px);
+  filter:blur(12px);
 }
 
 /* =========================================
@@ -336,8 +463,9 @@
 .chat-bubble{
 
   position: absolute;
+  display:none;
 
-  top: 60px;
+  top: 20px;
 
   right: 0;
 
@@ -346,15 +474,15 @@
 
   border: 1px solid rgba(255,255,255,.1);
 
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
 
   padding: 10px 15px;
 
-  border-radius: 18px;
+  border-radius: 8px;
 
   color: white;
 
-  font-weight: 600;
+  font-weight: 100;
 
   z-index: 10;
 
@@ -368,26 +496,26 @@
 
 .voice-controls{
 
-  position: absolute;
+  position:relative;
 
-  bottom: 25px;
+  display:flex;
 
-  left: 50%;
+  align-items:center;
 
-  transform: translateX(-50%);
+  justify-content:center;
 
-  display: flex;
+  gap:18px;
 
-  gap: 18px;
+  margin-top:-90px;
 
-  z-index: 20;
+  z-index:20;
 }
 
 .mic-toggle{
 
-  width: 50px;
+  width: 40px;
 
-  height: 50px;
+  height: 40px;
 
   border-radius: 50%;
 
@@ -395,7 +523,7 @@
 
   cursor: pointer;
 
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 
   display: flex;
 
@@ -452,15 +580,15 @@
 
   position: absolute;
 
-  bottom: 100px;
+  bottom: 50px;
 
-  right: 50%;
+  right: 55%;
 
   transform: translateX(50%);
 
-  width: 55px;
+  width: 35px;
 
-  height: 55px;
+  height: 35px;
 
   border-radius: 50%;
 
@@ -475,60 +603,11 @@
 
   color: white;
 
-  font-size: 1.2rem;
+  font-size: 0.8rem;
 
   cursor: pointer;
 
   z-index: 20;
-}
-
-/* =========================================
-   MOBILE
-========================================= */
-
-@media(max-width: 1100px){
-
-  .ai-welcome-section{
-
-    flex-direction: column;
-
-    text-align: center;
-
-    padding-top: 140px;
-  }
-
-  .welcome-center{
-
-    align-items: center;
-  }
-
-  .welcome-description{
-
-    margin: auto;
-  }
-
-  .chat-bubble{
-
-    position: relative;
-
-    top: auto;
-
-    right: auto;
-
-    margin-bottom: 20px;
-  }
-
-  .voice-controls{
-
-    position: relative;
-
-    margin-top: 30px;
-  }
-
-  .welcome-center h1{
-
-    font-size: 3.5rem;
-  }
 }
 
 /* =========================================
@@ -546,7 +625,7 @@
 
   width:100%;
 
-  height:3px;
+  height:2px;
 
   background:
   linear-gradient(
@@ -577,5 +656,192 @@
 
   100%{
     background-position:220%;
+  }
+}
+
+/* =========================================
+   MOBILE AIWELCOME FIX
+========================================= */
+
+@media(max-width:768px){
+
+  .ai-welcome-section{
+
+    min-height:auto;
+
+    padding:
+    100px 15px 60px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:flex-start;
+
+    overflow:hidden;
+  }
+
+  /* LOGO */
+
+/* LOGO LEFT SIDE FIX */
+
+.welcome-left{
+
+  position:absolute;
+
+  top:2px;
+
+  left:-90px;
+
+  z-index:20;
+}
+
+.welcome-logo{
+
+  width:95px;
+
+  height:auto;
+
+  object-fit:contain;
+
+  opacity:.95;
+}
+
+  /* CENTER TEXT */
+
+  .welcome-center{
+
+    width:100%;
+	
+	padding-top:20px;
+
+    padding-right:120px;
+
+    text-align:left;
+
+    align-items:flex-start;
+
+    z-index:5;
+  }
+
+  .welcome-center h1{
+
+    font-size:1.5rem;
+
+    line-height:1.2;
+
+    margin-bottom:10px;
+  }
+
+  .welcome-center h1 span{
+
+    font-size:.7rem;
+
+    letter-spacing:2px;
+  }
+
+  .typing-text{
+
+    font-size:.8rem;
+
+    max-width:220px;
+
+    line-height:1.4;
+  }
+
+  /* RIGHT AVATAR */
+
+  .welcome-right{
+
+    position:absolute;
+
+    top:-20px;
+    right:-50px;
+
+    width:280px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+  }
+
+  .welcome-avatar{
+
+    width:180px;
+
+    height:auto;
+
+    object-fit:contain;
+  }
+
+    .avatar-ring{
+
+    position:absolute;
+
+    width:180px;
+
+    height:240px;
+
+    border-radius:50%;
+
+    border:
+    1px solid rgba(0,255,255,.7);
+
+    box-shadow:
+    0 0 20px blue,
+    inset 0 0 20px blue;
+
+    z-index:5;
+  }
+
+  .avatar-platform{
+
+    width:90px;
+  }
+
+  /* CHAT */
+
+  .chat-bubble{
+	  display:none;
+
+    font-size:.4 3rem;
+
+    padding:8px 12px;
+
+    max-width:120px;
+
+    bottom:-5px;
+  }
+
+  /* CONTROLS */
+
+  .voice-controls{
+
+    margin-top:10px;
+
+    gap:10px;
+	bottom:60px;
+
+    justify-content:center;
+  }
+
+  .mic-toggle{
+
+    width:34px;
+    height:34px;
+
+    font-size:1.2rem;
+  }
+
+  /* LOCK BUTTON */
+
+  .mic-lock-btn{
+
+    width:38px;
+    height:38px;
+
+    right:0;
   }
 }

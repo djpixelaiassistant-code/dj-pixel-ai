@@ -1,24 +1,35 @@
-import React from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from "react-router-dom";
 
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Footer from "./components/Footer";
-import AIAssistant from "./components/AIAssistant";
-import AIWelcome from "./components/AIWelcome";
-import MainServices from "./components/MainServices";
+import Home from "./pages/Home";
+import NeonLive from "./pages/NeonLive";
 
 import "./styles/index.css";
 
-function App() {
-  return (
-    <>
-      <Navbar />
+function App(){
 
-      <Hero />
-      <AIWelcome />
-	  <MainServices />
-      <Footer />
-    </>
+  return(
+
+    <BrowserRouter>
+
+      <Routes>
+
+        <Route
+          path="/"
+          element={<Home />}
+        />
+
+        <Route
+          path="/neon-live"
+          element={<NeonLive />}
+        />
+
+      </Routes>
+
+    </BrowserRouter>
   );
 }
 

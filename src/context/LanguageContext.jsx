@@ -1,25 +1,76 @@
 import {
   createContext,
   useContext,
-  useState
+  useState,
+  useEffect
 } from "react";
+
+/* =========================================
+   CONTEXT
+========================================= */
 
 const LanguageContext =
 createContext();
+
+/* =========================================
+   PROVIDER
+========================================= */
 
 export function LanguageProvider({
   children
 }){
 
+  /* =========================================
+     LOAD SAVED LANGUAGE
+  ========================================= */
+
   const [language,setLanguage] =
-  useState("English");
+  useState(()=>{
+
+    return (
+
+      localStorage.getItem(
+        "websiteLanguage"
+      )
+
+      ||
+
+      "English"
+
+    );
+
+  });
+
+  /* =========================================
+     SAVE LANGUAGE
+  ========================================= */
+
+  useEffect(()=>{
+
+    localStorage.setItem(
+
+      "websiteLanguage",
+
+      language
+
+    );
+
+  },[language]);
+
+  /* =========================================
+     PROVIDER
+  ========================================= */
 
   return(
 
     <LanguageContext.Provider
+
       value={{
+
         language,
+
         setLanguage
+
       }}
     >
 
@@ -28,6 +79,10 @@ export function LanguageProvider({
     </LanguageContext.Provider>
   );
 }
+
+/* =========================================
+   CUSTOM HOOK
+========================================= */
 
 export function useLanguage(){
 

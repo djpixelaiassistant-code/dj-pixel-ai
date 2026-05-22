@@ -20,12 +20,8 @@ import {
   FiUnlock
 } from "react-icons/fi";
 
-import {
-  useLanguage
-} from "../context/LanguageContext";
-
-import languageData
-from "../translations/language";
+import useText
+from "../hooks/useText";
 
 import MouseGlow
 from "./MouseGlow";
@@ -49,11 +45,8 @@ export default function AIWelcome(){
      GLOBAL LANGUAGE
   ========================================= */
 
-  const { language } =
-  useLanguage();
-
-  const text =
-  languageData[language];
+const text =
+useText();
 
   /* =========================================
      SPEECH RECOGNITION
@@ -375,6 +368,7 @@ export default function AIWelcome(){
   return(
 
     <motion.section
+	id="home"
       className="ai-welcome-section"
 
       initial={{

@@ -1,0 +1,921 @@
+/* ===================================
+   NAVBAR
+=================================== */
+
+.neon-navbar{
+
+  position:fixed;
+
+  top:0;
+  left:0;
+
+  width:100%;
+
+  height:78px;
+
+  padding:0 54px;
+
+  display:grid;
+
+  grid-template-columns:
+  auto 1fr auto;
+
+  align-items:center;
+
+  background:
+  rgba(2,6,23,.92);
+
+  backdrop-filter:blur(18px);
+
+  border-bottom:
+  1px solid rgba(255,255,255,.06);
+
+  z-index:99999;
+
+  overflow:hidden;
+}
+
+/* RUNNING GLOW */
+
+.neon-navbar::after{
+
+  content:"";
+
+  position:absolute;
+
+  left:0;
+  bottom:0;
+
+  width:100%;
+  height:2px;
+
+  background:
+  linear-gradient(
+    90deg,
+    transparent,
+    cyan,
+    #ff00ff,
+    cyan,
+    transparent
+  );
+
+  background-size:300%;
+
+  animation:
+  navbarGlow 5s linear infinite;
+
+  box-shadow:
+  0 0 14px cyan;
+}
+
+@keyframes navbarGlow{
+
+  0%{
+    background-position:0%;
+  }
+
+  100%{
+    background-position:300%;
+  }
+}
+
+/* ===================================
+   LEFT
+=================================== */
+
+.neon-left{
+
+  display:flex;
+
+  align-items:center;
+}
+
+/* LOGO */
+
+.neon-logo{
+
+  width:180px;
+
+  object-fit:contain;
+
+  cursor:pointer;
+
+  transition:
+  transform .45s ease,
+  filter .45s ease;
+
+  filter:
+  drop-shadow(
+    0 0 10px
+    rgba(255,0,255,.35)
+  )
+  drop-shadow(
+    0 0 20px
+    rgba(0,255,255,.18)
+  );
+}
+
+/* HOVER */
+
+.neon-logo:hover{
+
+  transform:
+  scale(1.3);
+
+  filter:
+  drop-shadow(
+    0 0 20px
+    rgba(255,0,255,.6)
+  )
+  drop-shadow(
+    0 0 35px
+    rgba(0,255,255,.4)
+  );
+}
+
+/* ===================================
+   CENTER LINKS
+=================================== */
+
+.neon-links{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:32px;
+
+  width:100%;
+}
+
+.neon-links a{
+
+  position:relative;
+
+  text-decoration:none;
+
+  color:white;
+
+  font-size:.93rem;
+
+  font-weight:500;
+
+  white-space:nowrap;
+
+  transition:.35s ease;
+}
+
+/* HOVER */
+
+.neon-links a:hover{
+
+  color:#ff7de9;
+}
+
+/* LINE */
+
+.neon-links a::after{
+
+  content:"";
+
+  position:absolute;
+
+  left:0;
+  bottom:-8px;
+
+  width:0%;
+
+  height:2px;
+
+  border-radius:10px;
+
+  background:
+  linear-gradient(
+    90deg,
+    #ff00ff,
+    cyan
+  );
+
+  transition:.35s ease;
+}
+
+.neon-links a:hover::after{
+
+  width:100%;
+}
+
+/* ===================================
+   RIGHT
+=================================== */
+
+.neon-right{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:flex-end;
+
+  gap:10px;
+}
+
+/* ===================================
+   LANGUAGE
+=================================== */
+
+.language-box{
+
+  height:41px;
+
+  padding:0 12px;
+
+  border-radius:14px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  background:
+  rgba(255,255,255,.04);
+
+  border:
+  1px solid rgba(255,255,255,.08);
+
+  backdrop-filter:blur(12px);
+}
+
+/* SELECT */
+
+.language-box select{
+
+  appearance:none;
+
+  background:none;
+
+  border:none;
+
+  outline:none;
+
+  color:white;
+
+  font-size:.85rem;
+
+  cursor:pointer;
+
+  min-width:65px;
+}
+
+.language-box option{
+
+  background:#020617;
+}
+
+/* HIDE ARROW */
+
+.arrow-icon{
+
+  display:none;
+}
+
+/* ===================================
+   MENU BUTTON
+=================================== */
+
+.menu-btn{
+
+  width:44px;
+
+  height:44px;
+
+  border-radius:14px;
+
+  border:
+  1px solid rgba(255,255,255,.08);
+
+  background:
+  rgba(255,255,255,.04);
+
+  color:white;
+
+  font-size:1rem;
+
+  cursor:pointer;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  transition:.35s ease;
+
+  backdrop-filter:blur(14px);
+}
+
+/* HOVER */
+
+.menu-btn:hover{
+
+  background:
+  linear-gradient(
+    90deg,
+    #ff00ff,
+    cyan
+  );
+
+  transform:
+  translateY(-2px);
+}
+
+/* VERTICAL DOT */
+
+.menu-btn svg{
+
+  transform:rotate(180deg);
+}
+
+/* ===================================
+   LOGIN BUTTON
+=================================== */
+
+.login-btn{
+
+  position:relative;
+
+  height:44px;
+
+  padding:0 20px;
+
+  border-radius:14px;
+
+  border:
+  1px solid rgba(255,0,255,.4);
+
+  background:
+  rgba(255,255,255,.04);
+
+  color:white;
+
+  font-size:.9rem;
+
+  font-weight:600;
+
+  cursor:pointer;
+
+  overflow:hidden;
+
+  transition:.35s ease;
+
+  backdrop-filter:blur(14px);
+
+  box-shadow:
+  0 0 10px rgba(255,0,255,.2);
+}
+
+/* GLOW */
+
+.login-btn::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:-2px;
+
+  border-radius:12px;
+
+  background:
+  linear-gradient(
+    90deg,
+    transparent,
+    #ff00ff,
+    cyan,
+    #ff00ff,
+    transparent
+  );
+
+  background-size:300%;
+
+  animation:
+  loginGlow 4s linear infinite;
+
+  filter:blur(10px);
+
+  z-index:-2;
+}
+
+.login-btn::after{
+
+  content:"";
+
+  position:absolute;
+
+  inset:1px;
+
+  border-radius:13px;
+
+  background:
+  rgba(0);
+
+  z-index:-1;
+}
+
+/* HOVER */
+
+.login-btn:hover{
+
+  transform:
+  translateY(-3px);
+
+  box-shadow:
+  0 0 22px rgba(255,0,255,.35);
+}
+
+@keyframes loginGlow{
+
+  0%{
+    background-position:0%;
+  }
+
+  100%{
+    background-position:300%;
+  }
+}
+
+/* ===================================
+   MOBILE MENU OVERLAY
+=================================== */
+
+.mobile-menu-overlay{
+
+  position:fixed;
+
+  inset:0;
+
+  background:
+  rgba(0,0,0,.45);
+
+  backdrop-filter:blur(10px);
+
+  z-index:999999;
+
+  display:flex;
+
+  justify-content:flex-end;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:.4s ease;
+}
+
+/* SHOW */
+
+.show-menu{
+
+  opacity:1;
+
+  pointer-events:auto;
+}
+
+/* ===================================
+   MOBILE PANEL
+=================================== */
+
+.mobile-menu-panel{
+
+  width:220px;
+
+  height:100vh;
+
+  background:
+  rgba(2,6,23,.96);
+
+  border-left:
+  1px solid rgba(255,255,255,.08);
+
+  backdrop-filter:blur(24px);
+
+  box-shadow:
+  -10px 0 40px rgba(0,0,0,.4);
+
+  padding:100px 28px 40px;
+
+  overflow-y:auto;
+
+  transform:translateX(100%);
+
+  transition:.45s ease;
+}
+
+/* SLIDE */
+
+.show-menu .mobile-menu-panel{
+
+  transform:translateX(0%);
+}
+
+/* ===================================
+   CLOSE
+=================================== */
+
+.close-btn{
+
+  position:absolute;
+
+  top:20px;
+  right:20px;
+
+  width:42px;
+
+  height:42px;
+
+  border:none;
+
+  border-radius:14px;
+
+  background:
+  rgba(255,255,255,.05);
+
+  color:white;
+
+  font-size:1rem;
+
+  cursor:pointer;
+
+  transition:.35s ease;
+}
+
+.close-btn:hover{
+
+  background:
+  linear-gradient(
+    90deg,
+    #ff00ff,
+    cyan
+  );
+}
+
+/* ===================================
+   MOBILE LINKS
+=================================== */
+
+.mobile-links{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:24px;
+}
+
+.mobile-links a{
+
+  text-decoration:none;
+
+  color:white;
+
+  font-size:1rem;
+
+  font-weight:500;
+
+  transition:.35s ease;
+}
+
+.mobile-links a:hover{
+
+  color:#ff7de9;
+
+  transform:
+  translateX(8px);
+}
+
+/* ===================================
+   MOBILE LANGUAGE
+=================================== */
+
+.mobile-language{
+
+  margin-top:40px;
+
+  height:52px;
+
+  padding:0 16px;
+
+  border-radius:16px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+  background:
+  rgba(255,255,255,.04);
+
+  border:
+  1px solid rgba(255,255,255,.08);
+}
+
+.mobile-language select{
+
+  width:100%;
+
+  background:none;
+
+  border:none;
+
+  outline:none;
+
+  color:white;
+
+  font-size:.92rem;
+}
+
+.mobile-language option{
+
+  background:#020617;
+}
+
+/* ===================================
+   MOBILE LOGIN
+=================================== */
+
+/* ===================================
+   MOBILE AUTH BUTTONS
+=================================== */
+
+.mobile-auth-buttons{
+
+  margin-top:28px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:16px;
+}
+
+/* ===================================
+   LOGIN BUTTON
+=================================== */
+
+.mobile-login{
+
+  width:70%;
+
+  height:34px;
+
+  border:none;
+
+  border-radius:8px;
+
+  background:
+  linear-gradient(
+    90deg,
+    #ff00ff,
+    #8b5cf6,
+    cyan
+  );
+
+  background-size:300%;
+
+  color:white;
+
+  font-size:1rem;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:.35s ease;
+
+  box-shadow:
+  0 0 20px rgba(255,0,255,.28);
+
+  animation:
+  signupGlow 5s linear infinite;
+}
+
+/* GLOW */
+
+.mobile-login::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:2px;
+
+  border-radius:20px;
+
+  background:
+  linear-gradient(
+    90deg,
+    transparent,
+    #ff00ff,
+    cyan,
+    #ff00ff,
+    transparent
+  );
+
+  background-size:300%;
+
+  animation:
+  loginGlow 4s linear infinite;
+
+  filter:blur(10px);
+
+  z-index:-2;
+}
+
+.mobile-login::after{
+
+  content:"";
+
+  position:absolute;
+
+  inset:1px;
+
+  border-radius:7px;
+
+  background:
+  rgba(2,6,23,.92);
+
+  z-index:-1;
+}
+
+/* HOVER */
+
+.mobile-login:hover{
+
+  transform:
+  translateY(-4px);
+
+  box-shadow:
+  0 0 24px rgba(255,0,255,.35);
+}
+
+/* ===================================
+   SIGNUP BUTTON
+=================================== */
+
+.mobile-signup{
+
+  width:70%;
+
+  height:34px;
+
+  border:none;
+
+  border-radius:8px;
+
+  background:
+  linear-gradient(
+    90deg,
+    #ff00ff,
+    #8b5cf6,
+    cyan
+  );
+
+  background-size:300%;
+
+  color:white;
+
+  font-size:1rem;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:.35s ease;
+
+  box-shadow:
+  0 0 20px rgba(255,0,255,.28);
+
+  animation:
+  signupGlow 5s linear infinite;
+}
+
+/* HOVER */
+
+.mobile-signup:hover{
+
+  transform:
+  translateY(-4px)
+  scale(1.02);
+
+  box-shadow:
+  0 0 35px rgba(255,0,255,.4);
+}
+
+/* ANIMATION */
+
+@keyframes signupGlow{
+
+  0%{
+    background-position:0%;
+  }
+
+  100%{
+    background-position:300%;
+  }
+}
+
+/* ===================================
+   RESPONSIVE
+=================================== */
+
+@media(max-width:1100px){
+
+  .neon-links{
+
+    gap:20px;
+  }
+
+  .neon-links a{
+
+    font-size:.82rem;
+  }
+
+  .neon-logo{
+
+    width:150px;
+  }
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+  .neon-navbar{
+
+    height:72px;
+
+    padding:0 44px;
+
+    grid-template-columns:
+    auto 1fr auto;
+  }
+
+  /* HIDE CENTER LINKS */
+
+  .neon-links{
+
+    display:none;
+  }
+
+  /* LOGO */
+
+  .neon-logo{
+
+    width:185px;
+  }
+
+  /* HIDE DESKTOP LANGUAGE */
+
+  .language-box{
+
+    display:none;
+  }
+
+  /* RIGHT */
+
+  .neon-right{
+
+    gap:7px;
+  }
+
+  /* MENU BTN */
+
+  .menu-btn{
+
+    width:42px;
+
+    height:42px;
+	margin-left:auto;
+  }
+
+  /* LOGIN */
+
+  .login-btn{
+
+    height:40px;
+
+    padding:0 14px;
+
+    font-size:.78rem;
+  }
+
+  /* PANEL */
+
+  .mobile-menu-panel{
+
+    width:180px;
+  }
+}

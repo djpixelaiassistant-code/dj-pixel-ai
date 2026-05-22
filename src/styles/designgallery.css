@@ -1,0 +1,256 @@
+/* ===================================
+   DESIGN GALLERY
+=================================== */
+
+.design-gallery{
+
+  position:relative;
+
+  width:100%;
+
+  padding:90px 20px;
+
+  background:#020617;
+
+  overflow:hidden;
+}
+
+/* ===================================
+   TOP GLOW
+=================================== */
+
+.gallery-top-glow{
+
+  position:absolute;
+
+  top:0;
+  left:0;
+
+  width:100%;
+  height:4px;
+
+  background:
+  linear-gradient(
+    90deg,
+    transparent,
+    cyan,
+    #ff00ff,
+    cyan,
+    transparent
+  );
+
+  background-size:300%;
+
+  animation:galleryGlow 4s linear infinite;
+
+  box-shadow:
+  0 0 15px cyan;
+}
+
+@keyframes galleryGlow{
+
+  0%{
+    background-position:0%;
+  }
+
+  100%{
+    background-position:300%;
+  }
+}
+
+/* ===================================
+   HEADING
+=================================== */
+
+.gallery-heading{
+
+  text-align:center;
+
+  font-size:3rem;
+
+  font-weight:800;
+
+  margin-bottom:60px;
+
+  text-transform:uppercase;
+
+  background:
+  linear-gradient(
+    90deg,
+    cyan,
+    #ff00ff,
+    cyan
+  );
+
+  background-size:300%;
+
+  -webkit-background-clip:text;
+
+  -webkit-text-fill-color:transparent;
+
+  animation:titleGlow 5s linear infinite;
+}
+
+@keyframes titleGlow{
+
+  0%{
+    background-position:0%;
+  }
+
+  100%{
+    background-position:300%;
+  }
+}
+
+/* ===================================
+   GRID
+=================================== */
+
+.gallery-grid{
+
+  width:100%;
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(3,1fr);
+
+  gap:26px;
+}
+
+/* ===================================
+   CARD
+=================================== */
+
+.gallery-card{
+
+  position:relative;
+
+  height:320px;
+
+  border-radius:24px;
+
+  overflow:hidden;
+
+  cursor:pointer;
+
+  border:
+  1px solid rgba(255,255,255,.08);
+
+  background:
+  rgba(255,255,255,.04);
+
+  backdrop-filter:blur(14px);
+
+  transition:.45s ease;
+}
+
+/* IMAGE */
+
+.gallery-card img{
+
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+
+  transition:.5s ease;
+}
+
+/* OVERLAY */
+
+.gallery-overlay{
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+  linear-gradient(
+    to top,
+    rgba(2,6,23,.95),
+    transparent
+  );
+
+  display:flex;
+
+  align-items:flex-end;
+
+  padding:24px;
+
+  opacity:1;
+}
+
+.gallery-overlay h3{
+
+  color:white;
+
+  font-size:1.2rem;
+
+  font-weight:700;
+
+  text-shadow:
+  0 0 10px rgba(0,255,255,.25);
+}
+
+/* HOVER */
+
+.gallery-card:hover{
+
+  transform:
+  translateY(-10px)
+  scale(1.02);
+
+  box-shadow:
+  0 0 30px rgba(0,255,255,.18),
+  0 0 60px rgba(255,0,255,.12);
+}
+
+.gallery-card:hover img{
+
+  transform:scale(1.08);
+}
+
+/* ===================================
+   MOBILE
+=================================== */
+
+@media(max-width:768px){
+
+  .design-gallery{
+
+    padding:70px 14px;
+  }
+
+  .gallery-heading{
+
+    font-size:2rem;
+
+    margin-bottom:40px;
+  }
+
+  .gallery-grid{
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+    gap:14px;
+  }
+
+  .gallery-card{
+
+    height:210px;
+
+    border-radius:18px;
+  }
+
+  .gallery-overlay{
+
+    padding:14px;
+  }
+
+  .gallery-overlay h3{
+
+    font-size:.9rem;
+  }
+}

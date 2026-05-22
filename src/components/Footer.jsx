@@ -1,11 +1,10 @@
-import logoVideo from "../assets/logo.mp4";
+import logoVideo
+from "../assets/logo.mp4";
+
 import "../styles/footer.css";
 
-import { useLanguage }
-from "../context/LanguageContext";
-
-import languageData
-from "../translations/language";
+import useText
+from "../hooks/useText";
 
 export default function Footer() {
 
@@ -13,16 +12,15 @@ export default function Footer() {
      LANGUAGE
   ========================= */
 
-  const {
-    language
-  } = useLanguage();
-
   const text =
-    languageData[language];
+  useText();
 
   return (
 
-    <footer className="footer">
+    <footer
+  id="contact"
+  className="footer"
+>
 
       {/* TOP GLOW */}
 
@@ -41,7 +39,9 @@ export default function Footer() {
           <div className="footer-brand-top">
 
             <h2 className="footer-logo">
-              DJ Pixel Studio AI
+
+              {text.footerLogo}
+
             </h2>
 
             <div className="footer-video-wrap">
@@ -83,31 +83,31 @@ export default function Footer() {
 
           </h3>
 
-          <a href="#">
+          <a href="#home">
 
             {text.home}
 
           </a>
 
-          <a href="#">
+          <a href="#services">
 
             {text.services}
 
           </a>
 
-          <a href="#">
+          <a href="#design">
 
             {text.design}
 
           </a>
 
-          <a href="#">
+          <a href="#about">
 
             {text.about}
 
           </a>
 
-          <a href="#">
+          <a href="#contact">
 
             {text.contact}
 
@@ -148,6 +148,8 @@ export default function Footer() {
       <div className="footer-bottom">
 
         © 2026 DJ Pixel Studio AI.
+
+        {" "}
 
         {text.rights}
 

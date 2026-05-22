@@ -1,29 +1,57 @@
-@media (max-width: 768px) {
+/* =========================================
+   GLOBAL RESPONSIVE
+========================================= */
 
-.ai-container {
-  grid-template-columns: 1fr;
+*{
+
+  margin:0;
+  padding:0;
+
+  box-sizing:border-box;
 }
 
-.avatar-container {
-  order: 1;
+html{
+
+  scroll-behavior:smooth;
+
+  overflow-x:hidden;
 }
 
-.chat-box {
-  order: 2;
-  height: auto;
+body{
+
+  overflow-x:hidden;
+
+  width:100%;
+  
+  padding-top:74px;
+
+  background:#020617;
+
+  font-family:
+  "Poppins",
+  sans-serif;
 }
 
-.preview-card {
-  order: 3;
-  height: 320px;
+img,
+video{
+
+  max-width:100%;
+
+  height:auto;
+
+  display:block;
 }
 
-.ai-avatar {
-  max-width: 280px;
+button,
+input,
+select{
+
+  font-family:inherit;
 }
 
-.ai-assistant-section {
-  padding: 40px 20px;
-}
+section{
 
+  width:100%;
+
+  overflow:hidden;
 }

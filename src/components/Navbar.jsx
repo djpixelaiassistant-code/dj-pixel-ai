@@ -1,9 +1,10 @@
+import useText
+from "../hooks/useText";
+
 import {
   useLanguage
 } from "../context/LanguageContext";
 
-import languageData
-from "../translations/language";
 import {
   useState,
   useEffect,
@@ -27,20 +28,92 @@ export default function Navbar() {
      STATES
   ========================= */
 
-  const [open,setOpen] = useState(false);
+  const [open,setOpen] =
+  useState(false);
+
+  const text =
+  useText();
 
   const {
-  language,
-  setLanguage
-} = useLanguage();
+    language,
+    setLanguage
+  } = useLanguage();
 
-const text =
-languageData[language];
+  const menuRef =
+  useRef(null);
 
-  const menuRef = useRef(null);
+  const toggleRef =
+  useRef(null);
 
-  const toggleRef = useRef(null);
+  /* =========================
+     ALL LANGUAGES
+  ========================= */
 
+  const languages = [
+
+    "English",
+    "தமிழ்",
+    "हिन्दी",
+    "తెలుగు",
+    "ಕನ್ನಡ",
+    "മലയാളം",
+    "বাংলা",
+    "ગુજરાતી",
+    "ਪੰਜਾਬੀ",
+    "मराठी",
+    "اردو",
+    "অসমীয়া",
+    "ଓଡ଼ିଆ",
+    "संस्कृत",
+    "नेपाली",
+
+    "العربية",
+    "Français",
+    "Español",
+    "Deutsch",
+    "Italiano",
+    "Português",
+    "Русский",
+    "中文",
+    "日本語",
+    "한국어",
+    "Türkçe",
+    "ไทย",
+    "Bahasa",
+    "Melayu",
+    "TiếngViệt",
+    "Polski",
+    "Nederlands",
+    "Svenska",
+    "Norsk",
+    "Dansk",
+    "Suomi",
+    "Ελληνικά",
+    "Čeština",
+    "Magyar",
+    "Română",
+    "Українська",
+    "فارسی",
+    "עברית",
+    "Kiswahili",
+    "Afrikaans",
+    "Filipino",
+    "Slovenčina",
+    "Hrvatski",
+    "Srpski",
+    "Български",
+    "Lietuvių",
+    "Latviešu",
+    "Eesti",
+    "Català",
+    "Galego",
+    "Euskara",
+    "Македонски",
+    "Shqip",
+    "Bosanski",
+    "Монгол"
+
+  ];
 
   /* =========================
      OUTSIDE CLICK CLOSE
@@ -52,9 +125,13 @@ languageData[language];
 
       if(
         menuRef.current &&
-        !menuRef.current.contains(e.target) &&
+        !menuRef.current.contains(
+          e.target
+        ) &&
         toggleRef.current &&
-        !toggleRef.current.contains(e.target)
+        !toggleRef.current.contains(
+          e.target
+        )
       ){
 
         setOpen(false);
@@ -140,35 +217,35 @@ languageData[language];
       <nav className="menu">
 
         <a
-          href="#"
+          href="#home"
           className="nav-link"
         >
           {text.home}
         </a>
 
         <a
-          href="#"
+          href="#services"
           className="nav-link"
         >
           {text.services}
         </a>
 
         <a
-          href="#"
+          href="#design"
           className="nav-link"
         >
           {text.design}
         </a>
 
         <a
-          href="#"
+          href="#about"
           className="nav-link"
         >
           {text.about}
         </a>
 
         <a
-          href="#"
+          href="#contact"
           className="nav-link"
         >
           {text.contact}
@@ -184,23 +261,29 @@ languageData[language];
 
         <select
           className="language-selector"
+
           value={language}
+
           onChange={(e)=>
-            setLanguage(e.target.value)
+            setLanguage(
+              e.target.value
+            )
           }
         >
 
-          <option value="EN">
-            EN
-          </option>
+          {
+            languages.map((lang,index)=>(
 
-          <option value="தமிழ்">
-            தமிழ்
-          </option>
+              <option
+                key={index}
+                value={lang}
+              >
 
-          <option value="हिन्दी">
-            हिन्दी
-          </option>
+                {lang}
+
+              </option>
+            ))
+          }
 
         </select>
 
@@ -246,7 +329,9 @@ languageData[language];
 
       <div
         className="mobile-toggle"
+
         ref={toggleRef}
+
         onClick={()=>
           setOpen(!open)
         }
@@ -277,7 +362,9 @@ languageData[language];
               language-selector
               mobile-language
               "
+
               value={language}
+
               onChange={(e)=>
                 setLanguage(
                   e.target.value
@@ -285,17 +372,19 @@ languageData[language];
               }
             >
 
-              <option value="EN">
-                EN
-              </option>
+              {
+                languages.map((lang,index)=>(
 
-              <option value="தமிழ்">
-                தமிழ்
-              </option>
+                  <option
+                    key={index}
+                    value={lang}
+                  >
 
-              <option value="हिन्दी">
-                हिन्दी
-              </option>
+                    {lang}
+
+                  </option>
+                ))
+              }
 
             </select>
 
@@ -303,53 +392,69 @@ languageData[language];
 
             <a
               href="#"
+
               onClick={()=>
                 setOpen(false)
               }
             >
+
               {text.home}
+
             </a>
 
             <a
               href="#"
+
               onClick={()=>
                 setOpen(false)
               }
             >
+
               {text.services}
+
             </a>
 
             <a
               href="#"
+
               onClick={()=>
                 setOpen(false)
               }
             >
+
               {text.design}
+
             </a>
 
             <a
               href="#"
+
               onClick={()=>
                 setOpen(false)
               }
             >
+
               {text.about}
+
             </a>
 
             <a
               href="#"
+
               onClick={()=>
                 setOpen(false)
               }
             >
+
               {text.contact}
+
             </a>
 
             {/* MOBILE SIGNUP */}
 
             <button
               className="mobile-btn"
+
               onClick={()=>
                 setOpen(false)
               }
@@ -373,6 +478,7 @@ languageData[language];
 
             <button
               className="mobile-btn"
+
               onClick={()=>
                 setOpen(false)
               }
